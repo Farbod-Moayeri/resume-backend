@@ -1,0 +1,27 @@
+# docker-compose.yml
+# docker compose up && docker compose install/update
+# docker compose build before every run
+
+version: "3.9"
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: projects
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: 
+      - '5432:5432'
+    volumes:
+      - projects-db:/var/lib/postgresql/data
+
+  projects:
+    build:
+      context: .
+    depends_on: #doesnt run till postgres is running
+      - postgres
+    ports:
+      - '4444:4444'
+        
+volumes:
+  projects-db:
