@@ -1,0 +1,39 @@
+await Projects.create({
+            image: 'kingdomDeath.jpg',
+            title: 'Kingdom Death: Monster 1.6 + CCG',
+            description: 'My introduction to the software development world',
+            date: new Date(2021, 11, 4),
+            link: 'https://steamcommunity.com/sharedfiles/filedetails/?id=2672585904',
+            skills: [
+                { skill: "Lua" },
+                { skill: "TTS Lua" },
+                { skill: "Git" }
+            ]
+        }, {
+            include: [{
+                model: Skills,
+                as: 'skills'
+            }]
+        })
+
+await Projects.create({
+            image: 'portfolioWebsite.jpg',
+            title: 'My Portfolio Site',
+            description: 'Where my projects and work experience is displayed. Uses a React front-end with a back-end that is Dockerized and deployed using Kubernetes',
+            date: new Date(2023, 11, 26),
+            link: 'https://farbodm.com',
+            skills: [
+                { skill: "React" },
+                { skill: "Docker" },
+                { skill: "Kubernetes" },
+                { skill: "Tailwind"},
+                { skill: "Postgres"},
+                { skill: "Express"},
+                { skill: "Sequelize"}
+            ]
+        }, {
+            include: [{
+                model: Skills,
+                as: 'skills'
+            }]
+        })

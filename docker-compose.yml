@@ -1,7 +1,7 @@
 # docker-compose.yml
 # docker compose up && docker compose install/update
 # docker compose build before every run
-
+# docker exec -it react-resume-backend-postgres-1 psql -U postgres -d postgres -> on cmd to access postgres database
 version: "3.9"
 services:
   postgres:
@@ -21,7 +21,7 @@ services:
     depends_on: #doesnt run till postgres is running
       - postgres
     ports:
-      - '4444:4444'
+      - '8888:8888'
         
 volumes:
   projects-db:

@@ -5,6 +5,7 @@ const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
     host: 'postgres',
     dialect: 'postgres',
     port: 5432,
+    logging: false,
   });
   
   sequelize
@@ -17,50 +18,80 @@ const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
     });
 
 
-const Projects = sequelize.define('Projects', 
-    {
+const Projects = sequelize.define('Projects', {
     id: {
         type: Sequelize.INTEGER,
-        primaryKey: true, 
+        primaryKey: true,
         autoIncrement: true, 
-      },
     },
-    {
     image: Sequelize.STRING,
     title: Sequelize.STRING,
     description: Sequelize.TEXT,
-    year: Sequelize.INTEGER,
+    date: Sequelize.DATE,
     link: Sequelize.STRING
-    },
-    {
-        tableName: 'Projects',
-        createdAt: false, 
-        updatedAt: false, 
-        freezeTableName: true,
-    }
-);
+}, {
+    tableName: 'Projects',
+    createdAt: false, 
+    updatedAt: false, 
+    freezeTableName: true,
+});
 
-const Skills = sequelize.define('Skills', 
-    {
+const Skills = sequelize.define('Skills', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true, 
         autoIncrement: true, 
-      },
-    },
-    {
+        },
         skill: Sequelize.STRING
-    },
-    {
-        tableName: 'Skills',
-        createdAt: false, 
-        updatedAt: false, 
-        freezeTableName: true,
-    }
-);
+}, {
+    tableName: 'Skills',
+    createdAt: false, 
+    updatedAt: false, 
+    freezeTableName: true,
+});
 
-Projects.belongsToMany(Skills, {through: 'ProjectSkills'});
-Skills.belongsToMany(Projects, {through: 'ProjectSkills'});
+const ProjectSkills = sequelize.define('ProjectSkills', {
+    projectId: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: Projects,
+            key: 'id'
+        }
+    },
+    skillId: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: Skills,
+            key: 'id'
+        }
+    }
+}, {
+    tableName: 'ProjectSkills',
+    createdAt: false,
+    updatedAt: false,
+    freezeTableName: true
+});
+
+
+Projects.belongsToMany(Skills, { through: 'ProjectSkills', as: 'skills' });
+Skills.belongsToMany(Projects, { through: 'ProjectSkills', as: 'projects' });
+
+const Jobs = sequelize.define('Jobs', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    date: Sequelize.DATE,
+    title: Sequelize.STRING,
+    description: Sequelize.STRING
+}, {
+    tableName: 'Jobs',
+    createdAt: false,
+    updatedAt: false,
+    freezeTableName: true,
+});
+
 
 const initialize = () => {
     return new Promise ((resolve, reject) => {
@@ -78,7 +109,10 @@ const getAllProjects = () => {
     return new Promise ((resolve, reject) => {
         sequelize.sync()
             .then(() => {
-                Projects.findAll({ include: [Skills] })
+                Projects.findAll({ include: [{
+                    model: Skills, 
+                    as: 'skills' // Use the alias defined in the association
+                }]})
                 .then((projs) => {
                     if(projs && projs.length > 0) {
                         const projsJson = projs.map(proj => proj.get({plain : true}));
@@ -90,63 +124,60 @@ const getAllProjects = () => {
                     }
                 })
                 .catch((err) => {
-                    reject(err);
+                    reject(err.message);
                 })
             })
             .catch((err) => {
-                reject(err);
+                reject(err.message);
             })
     })
 };
 
-// for possible later use
-
-const addProject = (newProj) => {
+const getAllJobs = () => {
     return new Promise((resolve, reject) => {
-        Projects.create(newProj)
-        .then(() => {
-            resolve();
-        })
-        .catch((err) => {
-            reject(err);
-        })
+        sequelize.sync()
+            .then(() => {
+                Jobs.findAll()
+                .then((allJobs) => {
+                    if(allJobs && allJobs.length > 0) {
+                        const jobsJson = allJobs.map(job => job.get({plain : true}));
+                        resolve(jobsJson);
+                    }
+                    else {
+                        const err = new Error("No Jobs Available");
+                        reject(err.message);
+                    }
+                })
+                .catch((err) => {
+                    reject(err.message);
+                })
+            })
+            .catch((err) => {
+                reject(err.message);
+            })
     })
+}
+
+
+
+// const jane = await Projects.create({ name: "Jane" });
+
+const initializeDatabase = async () => {
+    try {
+        
+        
+
+
+    } catch (error) {
+        console.error('Error during bulk creation:', error);
+    }
+
+    // ... any other async operations
 };
 
-const deleteProject = (idNum) => {
-    return new Promise((resolve, reject) => {
-        Projects.destroy({ where: {id : idNum}})
-        .then(() => {
-            resolve();
-        })
-        .catch((err) => {
-            reject(err);
-        })
-    })
-};
 
-const editProject = (newProj, idNum) => {
-    return new Promise((resolve, reject) => {
-        Projects.update(newProj, {where: {id : idNum}})
-        .then(() => {
-            resolve();
-        })
-        .catch((err) => {
-            reject(err);
-        })
-    })
-}
+initializeDatabase()
+    .then(() => console.log('Initialization complete'))
+    .catch(error => console.error('Error during initialization', error));
 
-const addSkill = (skill) => {
-    // ????
-}
-
-const deleteSkill = (idNum) => {
-    // ????
-}
-
-const editSkill = (newSkill, idNum) => {
-    // ????
-}
-
-module.export = { initialize, getAllProjects};
+module.exports = { initialize, getAllProjects, getAllJobs };
