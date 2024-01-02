@@ -82,9 +82,10 @@ const Jobs = sequelize.define('Jobs', {
         primaryKey: true,
         autoIncrement: true,
     },
-    date: Sequelize.DATE,
+    startDate: Sequelize.DATE,
+    endDate: Sequelize.DATE,
     title: Sequelize.STRING,
-    description: Sequelize.STRING
+    description: Sequelize.TEXT
 }, {
     tableName: 'Jobs',
     createdAt: false,
@@ -164,10 +165,24 @@ const getAllJobs = () => {
 
 const initializeDatabase = async () => {
     try {
+        await Projects.create({
+            image: 'legoCollection.png',
+            title: 'LegoCollection Gallery',
+            description: '',
+            date: new Date(2023, 1, 0),
+            link: 'https://crazy-waders-ant.cyclic.app/',
+            skills: [
+                { skill: "MongoDB" },
+                { skill: "Postgres" },
+                { skill: "Express" }
+            ]
+        }, {
+            include: [{
+                model: Skills,
+                as: 'skills'
+            }]
+        })
         
-        
-
-
     } catch (error) {
         console.error('Error during bulk creation:', error);
     }
