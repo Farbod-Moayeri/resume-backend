@@ -1,7 +1,7 @@
-//require('dotenv').config();
+
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('postgres', 'postgres', 'postgres', {
+const sequelize = new Sequelize(process.env.PGDATABASE, process.env.PGUSER, process.env.PGPASSWORD, {
     host: 'postgres',
     dialect: 'postgres',
     port: 5432,
@@ -94,7 +94,7 @@ const Jobs = sequelize.define('Jobs', {
 });
 
 
-const initialize = () => {
+const initialize = async () => {
     return new Promise ((resolve, reject) => {
         sequelize.sync()
         .then(() => {
@@ -106,7 +106,7 @@ const initialize = () => {
     });
 };
 
-const getAllProjects = () => {
+const getAllProjects = async () => {
     return new Promise ((resolve, reject) => {
         sequelize.sync()
             .then(() => {
@@ -134,7 +134,7 @@ const getAllProjects = () => {
     })
 };
 
-const getAllJobs = () => {
+const getAllJobs = async () => {
     return new Promise((resolve, reject) => {
         sequelize.sync()
             .then(() => {
@@ -160,34 +160,109 @@ const getAllJobs = () => {
 }
 
 
-
-// const jane = await Projects.create({ name: "Jane" });
-
 const initializeDatabase = async () => {
-    try {
-        await Projects.create({
-            image: 'legoCollection.png',
-            title: 'LegoCollection Gallery',
-            description: '',
-            date: new Date(2023, 1, 0),
-            link: 'https://crazy-waders-ant.cyclic.app/',
-            skills: [
-                { skill: "MongoDB" },
-                { skill: "Postgres" },
-                { skill: "Express" }
-            ]
-        }, {
-            include: [{
-                model: Skills,
-                as: 'skills'
-            }]
-        })
-        
-    } catch (error) {
-        console.error('Error during bulk creation:', error);
-    }
 
-    // ... any other async operations
+    try {
+        const allProjs = await Projects.findAll();
+
+        if(allProjs.length === 0 || !allProjs)
+        {
+            await Projects.create({
+                image: 'kingdomDeath.jpg',
+                title: 'Kingdom Death: Monster 1.6 + CCG',
+                description: 'My introduction to the software development world. This project is a fork off github of an unmaintained repository. I added more to the game board and changed the board itself significantly.',
+                date: new Date(2021, 1, 0),
+                link: 'https://steamcommunity.com/sharedfiles/filedetails/?id=2672585904',
+                skills: [
+                    { skill: "Lua" },
+                    { skill: "TTS Lua" },
+                    { skill: "Git" }
+                ]
+            }, {
+                include: [{
+                    model: Skills,
+                    as: 'skills'
+                }]
+            })
+            
+            await Projects.create({
+                image: 'portfolioWebsite.jpg',
+                title: 'My Portfolio Site',
+                description: 'Where my projects and work experience is displayed. Uses a React front-end with a back-end that is Dockerized and deployed using Kubernetes. Also, is automated such that on Github push, the image is built and pushed to DockerHub as well.',
+                date: new Date(2023, 1, 0),
+                link: 'https://farbodm.com',
+                skills: [
+                    { skill: "Javascript" },
+                    { skill: "Github Actions" },
+                    { skill: "CI/CD" },
+                    { skill: "React" },
+                    { skill: "Docker" },
+                    { skill: "Kubernetes" },
+                    { skill: "Tailwind"},
+                    { skill: "Postgres"},
+                    { skill: "Express"},
+                    { skill: "Sequelize"}
+                ]
+            }, {
+                include: [{
+                    model: Skills,
+                    as: 'skills'
+                }]
+            })
+    
+            await Projects.create({
+                image: 'legoCollection.png',
+                title: 'LegoCollection Gallery',
+                description: 'A website that features lego sets and has CRUD operations to add, edit, or delete sets. Also, features proper authentication and authorization for the CRUD operations, with good data practices in terms of salting and hashing user credentials.',
+                date: new Date(2023, 1, 0),
+                link: 'https://crazy-waders-ant.cyclic.app/',
+                skills: [
+                    { skill: "JavaScript"},
+                    { skill: "Tailwind"},
+                    { skill: "Sequelize"},
+                    { skill: "MongoDB" },
+                    { skill: "Postgres" },
+                    { skill: "Express" },
+                    { skill: "Bcrypt"},
+                    { skill: "EJS"},
+                    { skill: "Client-Sessions"}
+                ]
+            }, {
+                include: [{
+                    model: Skills,
+                    as: 'skills'
+                }]
+            })     
+        }
+    } catch(err) {  
+        console.log(err);
+    }
+    
+    try {
+        const allJobs = await Jobs.findAll();
+
+        if(allJobs.length === 0 || !allJobs)
+        {
+            await Jobs.create({
+                startDate: new Date(2018, 1, 0),
+                endDate: new Date(2021, 1, 0),
+                title: 'Vesta Electric - Apprentice Electrician',
+                description: 'Gained practical experience in installing, repairing, and maintaining electrical systems under the guidance\
+                of experienced electricians. Developed proficiency in reading and interpreting electrical blueprints, schematic diagrams, and technical specifications.',
+            })
+            
+            await Jobs.create({
+                startDate: new Date(2021, 1, 0),
+                endDate: new Date(2022, 1 , 0),
+                title: 'Hillview Electric - Apprentice Electrician',
+                description: 'Collaborated with senior electricians to ensure accurate placement and alignment of components according to project specifications. \
+                Effectively communicated and coordinated with team members to streamline tasks, enhance productivity, and complete projects on schedule.',
+            })
+        }
+        
+    } catch(err) {
+        console.error(err);
+    }
 };
 
 

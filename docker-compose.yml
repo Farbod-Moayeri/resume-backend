@@ -18,6 +18,10 @@ services:
   projects:
     build:
       context: .
+    environment:
+      PGDATABASE: postgres
+      PGUSER: postgres
+      PGPASSWORD: postgres
     depends_on: #doesnt run till postgres is running
       - postgres
     ports:
