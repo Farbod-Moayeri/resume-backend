@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(process.env.PGDATABASE, process.env.PGUSER, process.env.PGPASSWORD, {
-    host: 'postgres',
+    host: process.env.PGHOST,
     dialect: 'postgres',
     port: 5432,
     logging: false,
