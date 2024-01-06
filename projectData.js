@@ -98,6 +98,9 @@ const initialize = async () => {
     return new Promise ((resolve, reject) => {
         sequelize.sync()
         .then(() => {
+            initializeDatabase()
+                .then(() => console.log('Initialization complete'))
+                .catch(error => console.error('Error during initialization', error));
             resolve();
         })
         .catch((err) => {
@@ -266,8 +269,6 @@ const initializeDatabase = async () => {
 };
 
 
-initializeDatabase()
-    .then(() => console.log('Initialization complete'))
-    .catch(error => console.error('Error during initialization', error));
+
 
 module.exports = { initialize, getAllProjects, getAllJobs };
