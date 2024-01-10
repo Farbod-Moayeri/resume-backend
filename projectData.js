@@ -164,6 +164,10 @@ const getAllJobs = async () => {
 
 
 const initializeDatabase = async () => {
+    await Projects.destroy({ truncate: { cascade: true } });
+    await Jobs.destroy({ truncate: { cascade: true } });
+    await ProjectSkills.destroy({ truncate: { cascade: true } });
+
 
     try {
         const allProjs = await Projects.findAll();
@@ -191,7 +195,7 @@ const initializeDatabase = async () => {
             await Projects.create({
                 image: 'portfolioWebsite.jpg',
                 title: 'My Portfolio Site',
-                description: 'Where my projects and work experience is displayed. Uses a React front-end with a back-end that is Dockerized and deployed using Kubernetes. Also, is automated such that on Github push, the image is built and pushed to DockerHub as well.',
+                description: 'My professional Portfolio Site. Uses a React front-end with a back-end that is Dockerized and deployed using Kubernetes. Automated using Github Actions and uses a Postgres image to store project data and job data.',
                 date: new Date(2023, 1, 0),
                 link: 'https://farbodm.com',
                 skills: [
@@ -216,7 +220,7 @@ const initializeDatabase = async () => {
             await Projects.create({
                 image: 'legoCollection.png',
                 title: 'LegoCollection Gallery',
-                description: 'A website that features lego sets and has CRUD operations to add, edit, or delete sets. Also, features proper authentication and authorization for the CRUD operations, with good data practices in terms of salting and hashing user credentials.',
+                description: 'A website that features lego sets and has CRUD operations to add, edit, or delete sets. Features proper authentication and authorization for the CRUD operations, with good data practices in terms of salting and hashing user credentials.',
                 date: new Date(2023, 1, 0),
                 link: 'https://crazy-waders-ant.cyclic.app/',
                 skills: [

@@ -5,10 +5,7 @@ const express = require('express');
 const app = express(); 
 const port = process.env.PORT || 8888; 
 
-
-
 app.use(cors());
-
 
 projectData.initialize()
 .then(() => {
@@ -17,7 +14,6 @@ projectData.initialize()
 .catch((err) => {
     console.log("Failed to load Docker database", err);
 })
-
 
 app.get('/express_backend', (req, res) => { 
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' }); 
