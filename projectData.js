@@ -196,7 +196,7 @@ const initializeDatabase = async () => {
                 image: 'portfolioWebsite.jpg',
                 title: 'My Portfolio Site',
                 description: 'My professional Portfolio Site. Uses a React front-end with a back-end that is Dockerized and deployed using Kubernetes. Automated using Github Actions and uses a Postgres image to store project data and job data.',
-                date: new Date(2023, 1, 0),
+                date: new Date(2024, 1, 0),
                 link: 'https://farbodm.com',
                 skills: [
                     { skill: "Javascript" },
@@ -250,6 +250,7 @@ const initializeDatabase = async () => {
 
         if(allJobs.length === 0 || !allJobs)
         {
+
             await Jobs.create({
                 startDate: new Date(2018, 1, 0),
                 endDate: new Date(2021, 1, 0),
@@ -260,10 +261,18 @@ const initializeDatabase = async () => {
             
             await Jobs.create({
                 startDate: new Date(2021, 1, 0),
-                endDate: new Date(2022, 1 , 0),
+                endDate: new Date(2023, 1 , 0),
                 title: 'Hillview Electric - Apprentice Electrician',
                 description: 'Collaborated with senior electricians to ensure accurate placement and alignment of components according to project specifications. \
                 Effectively communicated and coordinated with team members to streamline tasks, enhance productivity, and complete projects on schedule.',
+            })
+
+            await Jobs.create({
+                startDate: new Date(2023, 1, 0),
+                endDate: new Date(2026, 1, 0),
+                title: 'Enrolled in Seneca Polytechnic',
+                description: 'I enrolled in Seneca Polytechnic to become a software developer because I realized I had a passion for it;\
+                A passion for planning out large projects and a passion for developing them and molding them the way I see fit.',
             })
         }
         
