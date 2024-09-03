@@ -28,7 +28,8 @@ const Projects = sequelize.define('Projects', {
     title: Sequelize.STRING,
     description: Sequelize.TEXT,
     date: Sequelize.DATE,
-    link: Sequelize.STRING
+    repo: Sequelize.STRING,
+    site: Sequelize.STRING
 }, {
     tableName: 'Projects',
     createdAt: false, 
@@ -168,6 +169,8 @@ const initializeDatabase = async () => {
     await Jobs.destroy({ truncate: { cascade: true } });
     await ProjectSkills.destroy({ truncate: { cascade: true } });
 
+    await Projects.sync({force: true});
+    await Jobs.sync({force: true});
 
     try {
         const allProjs = await Projects.findAll();
@@ -176,10 +179,11 @@ const initializeDatabase = async () => {
         {
             await Projects.create({
                 image: 'kingdomDeath.jpg',
-                title: 'Kingdom Death: Monster 1.6 + CCG',
+                title: 'Kingdom Death',
                 description: 'My introduction to the software development world. This project is a fork off github of an unmaintained repository. I added more to the game board and changed the board itself significantly.',
-                date: new Date(2021, 1, 0),
-                link: 'https://steamcommunity.com/sharedfiles/filedetails/?id=2672585904',
+                date: new Date(2022, 9, 9),
+                site: 'https://steamcommunity.com/sharedfiles/filedetails/?id=2672585904',
+                repo: 'https://github.com/Farbod678/kdm-tts',
                 skills: [
                     { skill: "Lua" },
                     { skill: "TTS Lua" },
@@ -196,15 +200,16 @@ const initializeDatabase = async () => {
                 image: 'portfolioWebsite.jpg',
                 title: 'My Portfolio Site',
                 description: 'My professional Portfolio Site. Uses a React front-end with a back-end that is Dockerized and deployed using Kubernetes. Automated using Github Actions and uses a Postgres image to store project data and job data.',
-                date: new Date(2024, 1, 0),
-                link: 'https://farbodm.com',
+                date: new Date(2023, 12, 31),
+                site: '',
+                repo: 'https://github.com/Farbod-Moayeri/resume-frontend',
                 skills: [
-                    { skill: "Javascript" },
+                    { skill: "Docker" },
+                    { skill: "Kubernetes" },
                     { skill: "Github Actions" },
                     { skill: "CI/CD" },
                     { skill: "React" },
-                    { skill: "Docker" },
-                    { skill: "Kubernetes" },
+                    { skill: "Javascript" },
                     { skill: "Tailwind"},
                     { skill: "Postgres"},
                     { skill: "Express"},
@@ -219,10 +224,11 @@ const initializeDatabase = async () => {
     
             await Projects.create({
                 image: 'legoCollection.png',
-                title: 'LegoCollection Gallery',
+                title: 'Lego Gallery',
                 description: 'A website that features lego sets and has CRUD operations to add, edit, or delete sets. Features proper authentication and authorization for the CRUD operations, with good data practices in terms of salting and hashing user credentials.',
-                date: new Date(2023, 1, 0),
-                link: 'https://crazy-waders-ant.cyclic.app/',
+                date: new Date(2023, 12, 17),
+                site: 'https://lego-gallery.onrender.com/',
+                repo: 'https://github.com/Farbod-Moayeri/a3_cyclic',
                 skills: [
                     { skill: "JavaScript"},
                     { skill: "Tailwind"},
@@ -233,6 +239,25 @@ const initializeDatabase = async () => {
                     { skill: "Bcrypt"},
                     { skill: "EJS"},
                     { skill: "Client-Sessions"}
+                ]
+            }, {
+                include: [{
+                    model: Skills,
+                    as: 'skills'
+                }]
+            })     
+
+            await Projects.create({
+                image: 'artGallery.jpeg',
+                title: 'Art Gallery',
+                description: 'A website that features art pieces and has CRUD operations to add to favorites and to remove as well. Features good data practices in terms of salting and hashing user credentials.',
+                date: new Date(2024, 4, 16),
+                site: 'https://web422a6-5jib.onrender.com/',
+                repo: 'https://github.com/Farbod-Moayeri/Web422a6',
+                skills: [
+                    { skill: "React Hook Form"},
+                    { skill: "JWT"},
+                    { skill: "SWR"},
                 ]
             }, {
                 include: [{
@@ -252,15 +277,15 @@ const initializeDatabase = async () => {
         {
 
             await Jobs.create({
-                startDate: new Date(2018, 1, 0),
-                endDate: new Date(2021, 1, 0),
+                startDate: new Date(2018, 7, 0),
+                endDate: new Date(2022, 5, 1),
                 title: 'Vesta Electric - Apprentice Electrician',
                 description: 'Gained practical experience in installing, repairing, and maintaining electrical systems under the guidance\
                 of experienced electricians. Developed proficiency in reading and interpreting electrical blueprints, schematic diagrams, and technical specifications.',
             })
             
             await Jobs.create({
-                startDate: new Date(2021, 1, 0),
+                startDate: new Date(2022, 5, 19),
                 endDate: new Date(2023, 1 , 0),
                 title: 'Hillview Electric - Apprentice Electrician',
                 description: 'Collaborated with senior electricians to ensure accurate placement and alignment of components according to project specifications. \
@@ -271,6 +296,14 @@ const initializeDatabase = async () => {
                 startDate: new Date(2023, 1, 0),
                 endDate: new Date(2026, 1, 0),
                 title: 'Enrolled in Seneca Polytechnic',
+                description: 'I enrolled in Seneca Polytechnic to become a software developer because I realized I had a passion for it;\
+                A passion for planning out large projects and a passion for developing them and molding them the way I see fit.',
+            })
+
+            await Jobs.create({
+                startDate: new Date(2024, 5, 6),
+                endDate: new Date(2024, 11, 27),
+                title: 'Dev and Maintenance Shared and Community Services I&IT Solutions branch MCCSS/CYSSC - Jr Software Engineering Co-op',
                 description: 'I enrolled in Seneca Polytechnic to become a software developer because I realized I had a passion for it;\
                 A passion for planning out large projects and a passion for developing them and molding them the way I see fit.',
             })
