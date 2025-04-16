@@ -86,6 +86,8 @@ const Jobs = sequelize.define('Jobs', {
     startDate: Sequelize.DATE,
     endDate: Sequelize.DATE,
     title: Sequelize.STRING,
+    details: Sequelize.STRING,
+    skills: Sequelize.STRING,
     description: Sequelize.TEXT
 }, {
     tableName: 'Jobs',
@@ -264,7 +266,25 @@ const initializeDatabase = async () => {
                     model: Skills,
                     as: 'skills'
                 }]
-            })     
+            })
+            
+            await Projects.create({
+                image: 'mangaScraper.png',
+                title: 'Manga Scraper',
+                description: 'An IntelliJ Java project which utilizes Selenium to scrape manga off of a website. Uses Swing GUI for interaction with the user.',
+                date: new Date(2025, 4, 16),
+                site: '',
+                repo: 'https://github.com/Farbod-Moayeri/Manga-Scraper',
+                skills: [
+                    { skill: "Selenium"},
+                    { skill: "Swing GUI"},
+                ]
+            }, {
+                include: [{
+                    model: Skills,
+                    as: 'skills'
+                }]
+            })
         }
     } catch(err) {  
         console.log(err);
@@ -277,35 +297,45 @@ const initializeDatabase = async () => {
         {
 
             await Jobs.create({
-                startDate: new Date(2018, 7, 0),
-                endDate: new Date(2022, 5, 1),
-                title: 'Vesta Electric - Apprentice Electrician',
-                description: 'Gained practical experience in installing, repairing, and maintaining electrical systems under the guidance\
-                of experienced electricians. Developed proficiency in reading and interpreting electrical blueprints, schematic diagrams, and technical specifications.',
-            })
-            
-            await Jobs.create({
-                startDate: new Date(2022, 5, 19),
-                endDate: new Date(2023, 1 , 0),
-                title: 'Hillview Electric - Apprentice Electrician',
-                description: 'Collaborated with senior electricians to ensure accurate placement and alignment of components according to project specifications. \
-                Effectively communicated and coordinated with team members to streamline tasks, enhance productivity, and complete projects on schedule.',
+                startDate: new Date(2024, 5, 6),
+                endDate: new Date(2024, 11, 27),
+                title: 'Jr Software Engineering Co-op',
+                details: 'Dev and Maintenance Shared and Community Services I&IT Solutions branch MCCSS/CYSSC',
+                skills: 'Testing/Selenium/Java',
+                description: 'I was hired at the Ministry of Children, Community and Social Services (MCCSS) as a Jr Software Engineer to test their application\
+                and to create automated test scripts in Selenium for said application.',
             })
 
             await Jobs.create({
                 startDate: new Date(2023, 1, 0),
                 endDate: new Date(2026, 1, 0),
-                title: 'Enrolled in Seneca Polytechnic',
+                title: 'Student at Seneca Polytechnic',
+                details: 'Computer Programming and Analysis',
+                skills: 'C/C++/Web Development',
                 description: 'I enrolled in Seneca Polytechnic to become a software developer because I realized I had a passion for it;\
-                A passion for planning out large projects and a passion for developing them and molding them the way I see fit.',
+                A passion for planning out large projects and a passion for developing them.',
             })
 
+
             await Jobs.create({
-                startDate: new Date(2024, 5, 6),
-                endDate: new Date(2024, 11, 27),
-                title: 'Dev and Maintenance Shared and Community Services I&IT Solutions branch MCCSS/CYSSC - Jr Software Engineering Co-op',
-                description: 'I enrolled in Seneca Polytechnic to become a software developer because I realized I had a passion for it;\
-                A passion for planning out large projects and a passion for developing them and molding them the way I see fit.',
+                startDate: new Date(2022, 5, 19),
+                endDate: new Date(2023, 1 , 0),
+                title: 'Apprentice Electrician',
+                details: 'Hillview Electric',
+                skills: 'Troubleshooting/Testing/Labeling',
+                description: 'Collaborated with senior electricians to ensure accurate placement and alignment of components according to project specifications. \
+                Effectively communicated and coordinated with team members to streamline tasks, enhance productivity, and complete projects on schedule.',
+            })
+
+
+            await Jobs.create({
+                startDate: new Date(2018, 7, 0),
+                endDate: new Date(2022, 5, 1),
+                title: 'Apprentice Electrician',
+                details: 'Vesta Electric',
+                skills: 'Wiring/Measuring/Installing',
+                description: 'Gained practical experience in installing, repairing, and maintaining electrical systems under the guidance\
+                of experienced electricians. Developed proficiency in reading and interpreting electrical blueprints, schematic diagrams, and technical specifications.',
             })
         }
         
