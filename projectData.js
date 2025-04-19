@@ -171,8 +171,8 @@ const initializeDatabase = async () => {
     await Jobs.destroy({ truncate: { cascade: true } });
     await ProjectSkills.destroy({ truncate: { cascade: true } });
 
-    await Projects.sync({force: true});
-    await Jobs.sync({force: true});
+    await Projects.sync({alter: true});
+    await Jobs.sync({alter: true});
 
     try {
         const allProjs = await Projects.findAll();
@@ -278,6 +278,7 @@ const initializeDatabase = async () => {
                 skills: [
                     { skill: "Selenium"},
                     { skill: "Swing GUI"},
+                    { skill: "Java"},
                 ]
             }, {
                 include: [{
@@ -300,10 +301,10 @@ const initializeDatabase = async () => {
                 startDate: new Date(2024, 5, 6),
                 endDate: new Date(2024, 11, 27),
                 title: 'Jr Software Engineering Co-op',
-                details: 'Dev and Maintenance Shared and Community Services I&IT Solutions branch MCCSS/CYSSC',
+                details: 'Ministry of Children, Community and Social Services',
                 skills: 'Testing/Selenium/Java',
-                description: 'I was hired at the Ministry of Children, Community and Social Services (MCCSS) as a Jr Software Engineer to test their application\
-                and to create automated test scripts in Selenium for said application.',
+                description: 'Gained hands-on experience in both regression and sanity testing, \
+                and contributed to the development of automation scripts using the Selenium framework integrated with Cucumber.',
             })
 
             await Jobs.create({
