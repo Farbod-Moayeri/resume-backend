@@ -98,19 +98,15 @@ const Jobs = sequelize.define('Jobs', {
 
 
 const initialize = async () => {
-    return new Promise ((resolve, reject) => {
-        sequelize.sync()
-        .then(() => {
-            initializeDatabase()
-                .then(() => console.log('Initialization complete'))
-                .catch(error => console.error('Error during initialization', error));
-            resolve();
-        })
-        .catch((err) => {
-            reject(err.message);
-        })
-    });
-};
+    try {
+      await sequelize.sync({ force: true }); // drops and recreates all tables + sequences
+  
+      await initializeDatabase(); // loads default data
+      console.log("Initialization complete");
+    } catch (err) {
+      console.error("Database initialization error:", err);
+    }
+  };
 
 const getAllProjects = async () => {
     return new Promise ((resolve, reject) => {
@@ -167,14 +163,14 @@ const getAllJobs = async () => {
 
 
 const initializeDatabase = async () => {
-    await Projects.destroy({ truncate: { cascade: true } });
-    await Jobs.destroy({ truncate: { cascade: true } });
-    await ProjectSkills.destroy({ truncate: { cascade: true } });
+    // await Projects.destroy({ truncate: { cascade: true } });
+    // await Jobs.destroy({ truncate: { cascade: true } });
+    // await ProjectSkills.destroy({ truncate: { cascade: true } });
 
-    sequelize.sync({ force: true })
-    
-    await Projects.sync({alter: true});
-    await Jobs.sync({alter: true});
+    // sequelize.sync({ force: true })
+
+    // await Projects.sync({alter: true});
+    // await Jobs.sync({alter: true});
 
     
 
