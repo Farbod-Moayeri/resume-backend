@@ -171,8 +171,12 @@ const initializeDatabase = async () => {
     await Jobs.destroy({ truncate: { cascade: true } });
     await ProjectSkills.destroy({ truncate: { cascade: true } });
 
+    sequelize.sync({ force: true })
+    
     await Projects.sync({alter: true});
     await Jobs.sync({alter: true});
+
+    
 
     try {
         const allProjs = await Projects.findAll();
